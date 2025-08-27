@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:layout="sap.ui.layout"
+  xmlns:form="sap.ui.layout.form"
+  xmlns:core="sap.ui.core"
+  xmlns:richtexteditor="sap.ui.richtexteditor"
+  xmlns:viz="sap.viz.ui5"
+  controllerName="preview.app.controller.FiscalInformationView"
+  displayBlock="true">
+  <Page title="FiscalInformationView" enableScrolling="true">
+    <content>
+      <Title id="title_zaxc9b3d" text="Fiscal Information"/>
+      <Text id="viewContentPanel" width="100%"/>
+    </content>
+  </Page>
+</mvc:View>
