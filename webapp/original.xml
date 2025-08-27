@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebDynpro xmlns="http://www.sap.com/wd/webdynpro">
+  <View name="FiscalInformationView">
+    <Title>Fiscal Information</Title>
+    <Panel id="viewContentPanel" design="Transparent" width="100%">
+      <MatrixLayout numberOfColumns="1" width="100%" cellPadding="None" rowPadding="None">
+        <!-- Top Actions (Go, Hide Filter Bar, Filters (1)) -->
+        <MatrixLayoutCell hAlign="Right" vAlign="Top">
+          <FlowLayout id="topActionsFlowLayout" padding="Medium">
+            <Button id="goButton" text="Go" design="Emphasized" onAction="onActionGo"/>
+            <Link id="hideFilterBarLink" text="Hide Filter Bar" onAction="onActionHideFilterBar"/>
+            <Link id="filtersLink" text="Filters (1)" onAction="onActionShowFilters"/>
+          </FlowLayout>
+        </MatrixLayoutCell>
+
+        <!-- Filter Form Container -->
+        <MatrixLayoutCell>
+          <FormContainer id="filterFormContainer">
+            <MatrixLayout numberOfColumns="3" cellPadding="Medium" rowPadding="Medium">
+              <FormElement id="fe_fiscalYear">
+                <Label text="Fiscal Year:"/>
+                <InputField id="fiscalYearInput" value="{/filterData/fiscalYear}" valueHelpMode="Manual" onValueHelpRequest="onValueHelpFiscalYear"/>
+              </FormElement>
+              <FormElement id="fe_fiscalPeriod">
+                <Label text="Fiscal Period:"/>
+                <InputField id="fiscalPeriodInput" value="{/filterData/fiscalPeriod}" valueHelpMode="Manual" onValueHelpRequest="onValueHelpFiscalPeriod"/>
+              </FormElement>
+              <FormElement id="fe_fiscalYearPeriod">
+                <Label text="Fiscal Year Period:"/>
+                <InputField id="fiscalYearPeriodInput" value="{/filterData/fiscalYearPeriod}" placeholder="PPP/YYYY" valueHelpMode="Manual" onValueHelpRequest="onValueHelpFiscalYearPeriod"/>
+              </FormElement>
+              <FormElement id="fe_fiscalQuarter">
+                <Label text="Fiscal Quarter:"/>
+                <InputField id="fiscalQuarterInput" value="{/filterData/fiscalQuarter}" placeholder="=1 x" valueHelpMode="Manual" onValueHelpRequest="onValueHelpFiscalQuarter"/>
+              </FormElement>
+              <FormElement id="fe_fiscalYearQuarter">
+                <Label text="Fiscal Year Quarter:"/>
+                <InputField id="fiscalYearQuarterInput" value="{/filterData/fiscalYearQuarter}" placeholder="Q/YYYY" valueHelpMode="Manual" onValueHelpRequest="onValueHelpFiscalYearQuarter"/>
+              </FormElement>
+              <FormElement id="fe_fiscalWeek">
+                <Label text="Fiscal Week:"/>
+                <InputField id="fiscalWeekInput" value="{/filterData/fiscalWeek}" valueHelpMode="Manual" onValueHelpRequest="onValueHelpFiscalWeek"/>
+              </FormElement>
+              <FormElement id="fe_fiscalYearWeek">
+                <Label text="Fiscal Year Week:"/>
+                <InputField id="fiscalYearWeekInput" value="{/filterData/fiscalYearWeek}" placeholder="WW/YYYY" valueHelpMode="Manual" onValueHelpRequest="onValueHelpFiscalYearWeek"/>
+              </FormElement>
+              <FormElement id="fe_fiscalDayOfYear">
+                <Label text="Fiscal Day Of Year:"/>
+                <InputField id="fiscalDayOfYearInput" value="{/filterData/fiscalDayOfYear}" valueHelpMode="Manual" onValueHelpRequest="onValueHelpFiscalDayOfYear"/>
+              </FormElement>
+            </MatrixLayout>
+          </FormContainer>
+        </MatrixLayoutCell>
+
+        <!-- Pin Button below Filter Bar -->
+        <MatrixLayoutCell hAlign="Center" vAlign="Middle" padding="Small">
+          <Button id="pinButton" design="Transparent" imageSource="~sap_icon/pushpin-off" tooltip="Pin/Unpin Filter Bar" onAction="onActionTogglePin"/>
+        </MatrixLayoutCell>
+
+        <!-- Fiscal Information Table Section (Title + Actions + Table) -->
+        <MatrixLayoutCell>
+          <Panel id="fiscalInformationPanel" design="Transparent">
+            <MatrixLayout numberOfColumns="2" width="100%" cellPadding="Small" rowPadding="Small">
+              <MatrixLayoutCell vAlign="Top">
+                <TextView text="Fiscal Information (5)" design="H2"/>
+              </MatrixLayoutCell>
+              <MatrixLayoutCell hAlign="Right" vAlign="Top">
+                <FlowLayout id="tableActionsFlowLayout">
+                  <Button id="tablePrintButton" design="Transparent" imageSource="~sap_icon/print" tooltip="Print Table" onAction="onActionTablePrint"/>
+                  <Button id="tableSettingsButton" design="Transparent" imageSource="~sap_icon/settings" tooltip="Table Settings" onAction="onActionTableSettings"/>
+                  <Button id="tableExportButton" design="Transparent" imageSource="~sap_icon/export" tooltip="Export Table" onAction="onActionTableExport"/>
+                  <Button id="tableMoreActionsButton" design="Transparent" imageSource="~sap_icon/drop-down-list" tooltip="More Actions" onAction="onActionTableMoreActions"/>
+                </FlowLayout>
+              </MatrixLayoutCell>
+            </MatrixLayout>
+
+            <Table id="fiscalDataTable" dataSource="{/fiscalDataCollection}" selectionMode="MultiSelect" visibleRowCount="5">
+              <Columns>
+                <Column id="col_select" width="2rem" resizable="false">
+                  <Header>
+                    <CheckBox id="headerCheckBox" tooltip="Select All" onAction="onActionSelectAllRows"/>
+                  </Header>
+                  <Template>
+                    <CheckBox id="rowCheckBox" checked="{/fiscalDataCollection/current/selected}" onAction="onActionSelectRow"/>
+                  </Template>
+                </Column>
+                <Column id="col_fiscalYear" width="6rem" sortable="true" filterable="true">
+                  <Header>
+                    <TextView text="Fiscal Year"/>
+                  </Header>
+                  <Template>
+                    <TextView text="{/fiscalDataCollection/current/fiscalYear}"/>
+                  </Template>
+                </Column>
+                <Column id="col_fiscalPeriod" width="6rem" sortable="true" filterable="true">
+                  <Header>
+                    <TextView text="Fiscal Period"/>
+                  </Header>
+                  <Template>
+                    <TextView text="{/fiscalDataCollection/current/fiscalPeriod}"/>
+                  </Template>
+                </Column>
+                <Column id="col_fiscalYearPeriod" width="8rem" sortable="true" filterable="true">
+                  <Header>
+                    <TextView text="Fiscal Year Period"/>
+                  </Header>
+                  <Template>
+                    <TextView text="{/fiscalDataCollection/current/fiscalYearPeriod}"/>
+                  </Template>
+                </Column>
+                <Column id="col_fiscalQuarter" width="7rem" sortable="true" filterable="true">
+                  <Header>
+                    <TextView text="Fiscal Quarter"/>
+                  </Header>
+                  <Template>
+                    <TextView text="{/fiscalDataCollection/current/fiscalQuarter}"/>
+                  </Template>
+                </Column>
+                <Column id="col_fiscalYearQuarter" width="8rem" sortable="true" filterable="true">
+                  <Header>
+                    <TextView text="Fiscal Year Q..."/>
+                  </Header>
+                  <Template>
+                    <TextView text="{/fiscalDataCollection/current/fiscalYearQuarter}"/>
+                  </Template>
+                </Column>
+                <Column id="col_fiscalWeek" width="6rem" sortable="true" filterable="true">
+                  <Header>
+                    <TextView text="Fiscal Week"/>
+                  </Header>
+                  <Template>
+                    <TextView text="{/fiscalDataCollection/current/fiscalWeek}"/>
+                  </Template>
+                </Column>
+                <Column id="col_fiscalYearWeek" width="8rem" sortable="true" filterable="true">
+                  <Header>
+                    <TextView text="Fiscal Year We..."/>
+                  </Header>
+                  <Template>
+                    <TextView text="{/fiscalDataCollection/current/fiscalYearWeek}"/>
+                  </Template>
+                </Column>
+                <Column id="col_fiscalDayOfYear" width="7rem" sortable="true" filterable="true">
+                  <Header>
+                    <TextView text="Fiscal Day O..."/>
+                  </Header>
+                  <Template>
+                    <TextView text="{/fiscalDataCollection/current/fiscalDayOfYear}"/>
+                  </Template>
+                </Column>
+              </Columns>
+            </Table>
+          </Panel>
+        </MatrixLayoutCell>
+      </MatrixLayout>
+    </Panel>
+  </View>
+  <Controller name="FiscalInformationViewController">
+    <Methods>
+      <!-- Filter Bar Actions -->
+      <Method name="onActionGo"/>
+      <Method name="onActionHideFilterBar"/>
+      <Method name="onActionShowFilters"/>
+      <Method name="onActionTogglePin"/>
+
+      <!-- Filter Bar Value Helps -->
+      <Method name="onValueHelpFiscalYear"/>
+      <Method name="onValueHelpFiscalPeriod"/>
+      <Method name="onValueHelpFiscalYearPeriod"/>
+      <Method name="onValueHelpFiscalQuarter"/>
+      <Method name="onValueHelpFiscalYearQuarter"/>
+      <Method name="onValueHelpFiscalWeek"/>
+      <Method name="onValueHelpFiscalYearWeek"/>
+      <Method name="onValueHelpFiscalDayOfYear"/>
+
+      <!-- Table Actions -->
+      <Method name="onActionTablePrint"/>
+      <Method name="onActionTableSettings"/>
+      <Method name="onActionTableExport"/>
+      <Method name="onActionTableMoreActions"/>
+      <Method name="onActionSelectAllRows"/>
+      <Method name="onActionSelectRow"/>
+    </Methods>
+  </Controller>
+</WebDynpro>

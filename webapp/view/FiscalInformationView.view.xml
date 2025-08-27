@@ -1,17 +1,180 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mvc:View xmlns:mvc="sap.ui.core.mvc"
-  xmlns="sap.m"
-  xmlns:layout="sap.ui.layout"
-  xmlns:form="sap.ui.layout.form"
-  xmlns:core="sap.ui.core"
-  xmlns:richtexteditor="sap.ui.richtexteditor"
-  xmlns:viz="sap.viz.ui5"
-  controllerName="preview.app.controller.FiscalInformationView"
-  displayBlock="true">
-  <Page title="FiscalInformationView" enableScrolling="true">
-    <content>
-      <Title id="title_zaxc9b3d" text="Fiscal Information"/>
-      <Text id="viewContentPanel" width="100%"/>
-    </content>
-  </Page>
+<mvc:View
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:layout="sap.ui.layout"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	controllerName="converted.fiscalinformationview.controller.FiscalInformationView"
+	displayBlock="true"
+          xmlns:commons="sap.ui.commons">
+	<Page title="Fiscal Information" enableScrolling="true">
+		<content>
+			<layout:Grid columns="1" width="100%">
+				<layout:content>
+					<layout:Grid columns="1">
+						<layout:content>
+							<layout:Grid columns="3" width="100%">
+								<layout:content>
+									<layout:Grid columns="1">
+										<layout:content>
+											<Button id="goButton" text="Go" type="Emphasized" press=".onActionGo"/>
+											<Link id="hideFilterBarLink" text="Hide Filter Bar" press=".onActionHideFilterBar"/>
+											<Link id="filtersLink" text="Filters (1)" press=".onActionShowFilters"/>
+										</layout:Grid>
+									</layout:Grid>
+									<layout:Grid columns="1">
+										<layout:content>
+											<form:SimpleForm id="filterForm" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false"
+												editable="true" layout="ResponsiveGridLayout">
+												<form:content>
+													<form:FormElement label="Fiscal Year:">
+														<form:fields>
+															<Input id="fiscalYearInput" value="{filterData>/fiscalYear}" placeholder=""/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement label="Fiscal Period:">
+														<form:fields>
+															<Input id="fiscalPeriodInput" value="{filterData>/fiscalPeriod}" placeholder=""/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement label="Fiscal Year Period:">
+														<form:fields>
+															<Input id="fiscalYearPeriodInput" value="{filterData>/fiscalYearPeriod}" placeholder="PPP/YYYY"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement label="Fiscal Quarter:">
+														<form:fields>
+															<Input id="fiscalQuarterInput" value="{filterData>/fiscalQuarter}" placeholder="=1 x"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement label="Fiscal Year Quarter:">
+														<form:fields>
+															<Input id="fiscalYearQuarterInput" value="{filterData>/fiscalYearQuarter}" placeholder="Q/YYYY"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement label="Fiscal Week:">
+														<form:fields>
+															<Input id="fiscalWeekInput" value="{filterData>/fiscalWeek}" placeholder=""/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement label="Fiscal Year Week:">
+														<form:fields>
+															<Input id="fiscalYearWeekInput" value="{filterData>/fiscalYearWeek}" placeholder="WW/YYYY"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement label="Fiscal Day Of Year:">
+														<form:fields>
+															<Input id="fiscalDayOfYearInput" value="{filterData>/fiscalDayOfYear}" placeholder=""/>
+														</form:fields>
+													</form:FormElement>
+												</form:content>
+											</form:SimpleForm>
+										</layout:content>
+									</layout:Grid>
+								</layout:content>
+								<layout:content>
+									<Button id="pinButton" icon="sap-icon://pushpin-off" type="Transparent" tooltip="Pin/Unpin Filter Bar" press=".onActionTogglePin"/>
+								</layout:content>
+								<layout:content>
+									<Panel id="fiscalInformationPanel" design="Translucent" headerText="Fiscal Information (5)">
+										<layout:Grid columns="2">
+											<layout:content>
+												<Text text="Fiscal Information (5)" design="H2"/>
+											</layout:content>
+											<layout:content>
+												<Toolbar>
+													<content>
+														<Button id="tablePrintButton" icon="sap-icon://print" type="Transparent" tooltip="Print Table" press=".onActionTablePrint"/>
+														<Button id="tableSettingsButton" icon="sap-icon://settings" type="Transparent" tooltip="Table Settings" press=".onActionTableSettings"/>
+														<Button id="tableExportButton" icon="sap-icon://export" type="Transparent" tooltip="Export Table" press=".onActionTableExport"/>
+														<Button id="tableMoreActionsButton" icon="sap-icon://drop-down-list" type="Transparent" tooltip="More Actions" press=".onActionTableMoreActions"/>
+													</content>
+												</Toolbar>
+											</layout:content>
+										</layout:Grid>
+										<Table id="fiscalDataTable" items="{fiscalData>/}" selectionMode="MultiSelect" growing="true">
+											<columns>
+												<Column width="2rem">
+													<header>
+														<CheckBox id="headerCheckBox" tooltip="Select All" press=".onActionSelectAllRows"/>
+													</header>
+													<template>
+														<CheckBox checked="{selected}" press=".onActionSelectRow"/>
+													</template>
+												</Column>
+												<Column width="6rem" sortProperty="fiscalYear" filterProperty="fiscalYear">
+													<header>
+														<Text text="Fiscal Year"/>
+													</header>
+													<template>
+														<Text text="{fiscalYear}"/>
+													</template>
+												</Column>
+												<Column width="6rem" sortProperty="fiscalPeriod" filterProperty="fiscalPeriod">
+													<header>
+														<Text text="Fiscal Period"/>
+													</header>
+													<template>
+														<Text text="{fiscalPeriod}"/>
+													</template>
+												</Column>
+												<Column width="8rem" sortProperty="fiscalYearPeriod" filterProperty="fiscalYearPeriod">
+													<header>
+														<Text text="Fiscal Year Period"/>
+													</header>
+													<template>
+														<Text text="{fiscalYearPeriod}"/>
+													</template>
+												</Column>
+												<Column width="7rem" sortProperty="fiscalQuarter" filterProperty="fiscalQuarter">
+													<header>
+														<Text text="Fiscal Quarter"/>
+													</header>
+													<template>
+														<Text text="{fiscalQuarter}"/>
+													</template>
+												</Column>
+												<Column width="8rem" sortProperty="fiscalYearQuarter" filterProperty="fiscalYearQuarter">
+													<header>
+														<Text text="Fiscal Year Q..."/>
+													</header>
+													<template>
+														<Text text="{fiscalYearQuarter}"/>
+													</template>
+												</Column>
+												<Column width="6rem" sortProperty="fiscalWeek" filterProperty="fiscalWeek">
+													<header>
+														<Text text="Fiscal Week"/>
+													</header>
+													<template>
+														<Text text="{fiscalWeek}"/>
+													</template>
+												</Column>
+												<Column width="8rem" sortProperty="fiscalYearWeek" filterProperty="fiscalYearWeek">
+													<header>
+														<Text text="Fiscal Year We..."/>
+													</header>
+													<template>
+														<Text text="{fiscalYearWeek}"/>
+													</template>
+												</Column>
+												<Column width="7rem" sortProperty="fiscalDayOfYear" filterProperty="fiscalDayOfYear">
+													<header>
+														<Text text="Fiscal Day O..."/>
+													</header>
+													<template>
+														<Text text="{fiscalDayOfYear}"/>
+													</template>
+												</Column>
+											</columns>
+										</Table>
+									</Panel>
+								</layout:content>
+							</layout:Grid>
+						</layout:content>
+					</layout:Grid>
+				</layout:content>
+			</layout:Grid>
+		</content>
+	</Page>
 </mvc:View>
